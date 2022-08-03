@@ -912,6 +912,9 @@ unsigned l_update_device_op_queue_once(acl_device_op_queue_t *doq) {
                 op->info.event->cmd.info.ndrange_kernel.device;
             unsigned int fast_launch_depth =
                 kernel->accel_def->fast_launch_depth;
+            if (kernel->accel_def->streaming_control_info_available) {
+              fast_launch_depth = 0; // BS FIXME: HACK
+            }
             if (op->info.type == ACL_DEVICE_OP_MEM_MIGRATION) {
               if (l_is_noop_migration(op) && !block_noop_pruning) {
                 // ignore if we conflict on the conflict matrix
