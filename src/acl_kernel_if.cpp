@@ -999,6 +999,9 @@ int acl_kernel_if_update(const acl_device_def_autodiscovery_t &devdef,
     for (unsigned a = 0; a < kern->num_accel; ++a) {
       unsigned int max_same_accel_launches =
           devdef.accel[a].fast_launch_depth + 1;
+      if (devdef.accel[a].streaming_control_info_available) {
+        max_same_accel_launches = 1000;
+      }
       // +1, because fast launch depth does not account for the running kernel
       kern->accel_invoc_queue_depth[a] = max_same_accel_launches;
       kern->accel_job_ids[a] =
